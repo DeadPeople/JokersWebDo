@@ -2,12 +2,17 @@ package test
 {
 	import enum.Enum;
 	
+	import flash.geom.Point;
+	
 	import flexunit.framework.Assert;
 	
 	import game.World;
+	import game.mode.GameMode;
+	import game.mode.NormalMode;
 	
-	import model.Hero;
 	import model.Player;
+	import model.Unit;
+	import model.unitType.AHero;
 	
 	import org.flexunit.asserts.assertTrue;
 	
@@ -36,33 +41,24 @@ package test
 		[Test]
 		public function testWorld():void
 		{
-//			Assert.fail("Test method Not yet implemented");
 			// init world
-			var world:World = new World();
+			var mode:NormalMode = new NormalMode();
+			var world:World = new World(mode);
 			
 			// add players
 			var player1:Player = new Player("近卫1",1);
-			player1.initDate();
 			var player2:Player = new Player("天灾1",2);
-			player2.initDate();
 			
 			world.addPlayer(player1);
 			world.addPlayer(player2);
 			
-			// init hero
-			var hero1:Hero = new Hero();
-			hero1.initDate();
-			var hero2:Hero = new Hero();
-			hero2.initDate();
+			// player select hero
+			mode.selectHero(0, player1);
+			var hero1:Unit = world._lastUnit;
+			mode.selectHero(0, player2);
+			var hero2:Unit = world._lastUnit;
 			
-			player1.addHero(hero1);
-			player2.addHero(hero2);
-			
-			// add hero in world
-			world.addUnit(hero1);
-			world.addUnit(hero2);
-			world.moveUnitToTheRegion(hero1, Enum.R_Sentinel_heroStart);
-			world.moveUnitToTheRegion(hero1, Enum.R_Scourge_heroStart);
+			// player buy something
 			
 			
 			assertTrue(true);

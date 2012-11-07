@@ -1,5 +1,7 @@
 package model
 {
+	import model.unitType.AHero;
+	
 	import mx.collections.ArrayList;
 
 	public class Player
@@ -14,14 +16,15 @@ package model
 			this._name = name;
 			this._teamId = teamId;
 			_heros = new ArrayList();
+			
+			initDate();
 		}
 		
-		public function initDate():void {			// 初始化玩家数据
-			_money = 0;					// 金钱：0
+		protected function initDate():void {		// 初始化玩家数据
 		}
 		
-		public function addHero(hero:Hero):void {	// 添加英雄
-			_heros.addItem(hero);
+		public function addHero(unit:Unit):void {	// 添加英雄
+			_heros.addItem(unit);
 		}
 	}
 }
