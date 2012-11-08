@@ -2,7 +2,10 @@ package model
 {
 	import flash.geom.Point;
 	
+	import model.skill.Skill;
 	import model.unitType.Addition;
+	
+	import mx.collections.ArrayList;
 
 	public class Unit
 	{
@@ -18,15 +21,27 @@ package model
 		public var _physicsDefense:Number;					// 物理护甲
 		public var _magicDefense:Number;					// 魔法护甲
 		
+		public var _skills:ArrayList;						// 技能列表
 		public var _addition:Addition;
 		
 		public function Unit()
 		{
+			_skills = new ArrayList();
 			initDate();
 		}
 		
 		protected function initDate():void { // 初始化单位数据
 			
+		}
+		
+		public function addSkill(skill:Skill):void {
+			_skills.addItem(skill);
+		}
+		
+		//-------- 获取属性  ----------
+		// 单位和点之间的距离
+		public function getDistance(position:Point):Number {
+			return Point.distance(_position, position);
 		}
 	}
 }

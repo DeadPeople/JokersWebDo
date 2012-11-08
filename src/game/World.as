@@ -1,7 +1,9 @@
 package game
 {
+	import flash.events.Event;
 	import flash.geom.Point;
 	
+	import game.event.UnitEvent;
 	import game.mode.GameMode;
 	
 	import model.Player;
@@ -10,6 +12,7 @@ package game
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
+	import mx.controls.Alert;
 
 	public class World
 	{
@@ -19,11 +22,18 @@ package game
 		public var _units:ArrayList;
 		public var _regions:ArrayList;
 		
+		public var _playerNeutral:Player;
+		public var _playerEnemy:Player;
+		
 		// 系统数据
 		public var _lastUnit:Unit;
 		
 		public function World(mode:GameMode)
 		{
+			// 创建中立，中立敌对玩家
+			_playerNeutral = new Player("Neutral", 0);
+			_playerEnemy = new Player("Enemy", -1);
+			
 			_players = new ArrayList();
 			_units = new ArrayList();
 			_regions = new ArrayList();
@@ -60,6 +70,13 @@ package game
 			unit._addition = new AHero();
 			player.addHero(unit);
 			return unit;
+		}
+		
+		// 事件注册
+		public function addUnitEventListener(unit:Unit, event:Event, func:Function):void {
+			if(event is UnitEvent) {		// 如果是单位事件
+				// TODO: 添加单位事件处理
+			}
 		}
 	}
 }

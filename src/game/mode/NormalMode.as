@@ -2,7 +2,10 @@ package game.mode{
 	import game.Region;
 	import game.World;
 	
+	import model.Goods;
 	import model.Player;
+	import model.Unit;
+	import model.skill.SShoper;
 	import model.unitType.AHero;
 
 	public class NormalMode extends GameMode{
@@ -18,6 +21,8 @@ package game.mode{
 		public override function init(world:World):void {
 			super.init(world);
 			
+			// 创建游戏区域
+			// TODO: 创建区域
 			var region:Region;
 			region = new Region(R_Sentinel_heroStart);
 			region = new Region(R_Scourge_heroStart);
@@ -27,7 +32,15 @@ package game.mode{
 			region = new Region(R_Scourge_armyUp);
 			region = new Region(R_Scourge_armyMid);
 			region = new Region(R_Scourge_armyDown);
-			// TODO: 创建区域
+			
+			
+			// 创建售货商人
+			// TODO: 创建商人
+			var shopSe:Unit = _world.createUnitForPlayer(0, _world._playerNeutral);
+			var sshoper:SShoper = new SShoper(shopSe);
+			sshoper.addGood(new Goods(0));
+			
+			
 		}
 		
 		// 初始化玩家数据

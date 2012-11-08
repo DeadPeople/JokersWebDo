@@ -7,6 +7,7 @@ package test
 	import flexunit.framework.Assert;
 	
 	import game.World;
+	import game.event.UnitEvent;
 	import game.mode.GameMode;
 	import game.mode.NormalMode;
 	
@@ -59,7 +60,6 @@ package test
 			var hero2:Unit = world._lastUnit;
 			
 			// player buy something
-			
 			
 			assertTrue(true);
 		}
