@@ -2,14 +2,14 @@ package model.unitType
 {
 	public class AHero extends Addition
 	{
-		public static const _aPower:String = "POW";
-		public static const _aAgile:String = "AGI";
-		public static const _aTelent:String = "TEL";
+		public static const _aStrong:String = "STR";
+		public static const _aSwift:String = "SFT";
+		public static const _aWise:String = "WIS";
 		
 		public function AHero() {
-			_map[_aPower] = 0;
-			_map[_aAgile] = 0;
-			_map[_aTelent] = 0;
+			_map[_aStrong] = 0;
+			_map[_aSwift] = 0;
+			_map[_aWise] = 0;
 		}
 	}
 }
