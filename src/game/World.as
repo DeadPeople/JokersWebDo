@@ -25,18 +25,31 @@ package game
 		public var _playerNeutral:Player;
 		public var _playerEnemy:Player;
 		
+		// 单件模式
+		public static var _WORLD:World;
+		
 		// 系统数据
 		public var _lastUnit:Unit;
 		
+		// 系统事件单位组
+		public var _unitCloseEventAry:ArrayList;
+		public var _unitLeaveEventAry:ArrayList;
+		
 		public function World(mode:GameMode)
 		{
+			// 给世界赋值，游戏永远只存在一个世界
+			_WORLD = this;
+			
 			// 创建中立，中立敌对玩家
 			_playerNeutral = new Player("Neutral", 0);
 			_playerEnemy = new Player("Enemy", -1);
 			
+			// 初始化数组
 			_players = new ArrayList();
 			_units = new ArrayList();
 			_regions = new ArrayList();
+			_unitCloseEventAry = new ArrayList();
+			_unitLeaveEventAry = new ArrayList();
 			
 			_mode = mode;
 			_mode.init(this);
@@ -58,6 +71,7 @@ package game
 			unit._player = player;
 			if(position != null) unit._position = position;
 			unit._angle = angle;
+			_units.addItem(unit);
 			
 			_lastUnit = unit;
 			return unit;
@@ -73,9 +87,37 @@ package game
 		}
 		
 		// 事件注册
-		public function addUnitEventListener(unit:Unit, event:Event, func:Function):void {
+		public function addWorldEvent(event:Event):void {
 			if(event is UnitEvent) {		// 如果是单位事件
 				// TODO: 添加单位事件处理
+				var ue:UnitEvent = UnitEvent(event);
+				switch(ue.type){
+					case UnitEvent.UNIT_CLOSE_TO:
+						_unitCloseEventAry.addItem(event);
+						break;
+					case UnitEvent.UNIT_LEAVE_OFF:
+						_unitLeaveEventAry.addItem(event);
+						break;
+				}
+			}
+		}
+		
+		//---------------------------------------
+		// 刷新世界
+		public function refresh():void {
+			var ue:UnitEvent;
+			var unit:Unit;
+			var target:Unit;
+			// 单位移动
+			
+			// 单位事件 - 靠近
+			for each(ue in _unitCloseEventAry) {
+				unit = ue._unit;
+				for each(target in _units) {
+					if(Point.distance(unit._position, target._position) <= ue._distance) {
+						ue._func(unit, target, ue._skill);
+					}
+				}
 			}
 		}
 	}

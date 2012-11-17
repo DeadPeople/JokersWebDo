@@ -36,6 +36,7 @@ package model
 		
 		public function addSkill(skill:Skill):void {
 			_skills.addItem(skill);
+			skill.skillAdded(this);
 		}
 		
 		//-------- 获取属性  ----------

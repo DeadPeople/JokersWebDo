@@ -39,6 +39,7 @@ package game.mode{
 			var shopSe:Unit = _world.createUnitForPlayer(0, _world._playerNeutral);
 			var sshoper:SShoper = new SShoper(shopSe);
 			sshoper.addGood(new Goods(0));
+			shopSe.addSkill(sshoper);
 			
 			
 		}
@@ -52,6 +53,8 @@ package game.mode{
 		// 玩家选择英雄
 		public function selectHero(uid:uint, player:Player):void {
 			_world.createHeroForPlayer(uid, player);
+			
+			// TODO: 移动英雄到对应位置
 		}
 	}
 }
