@@ -1,12 +1,13 @@
 package model.skill
 {
-	import flexunit.utils.ArrayList;
-	
 	import game.World;
 	import game.event.UnitEvent;
 	
 	import model.Goods;
 	import model.Unit;
+	
+	import mx.collections.ArrayList;
+	import mx.controls.Alert;
 
 	public class SShoper extends Skill
 	{
@@ -27,13 +28,9 @@ package model.skill
 		
 		// event answer
 		public override function skillAdded(unit:Unit):void {
-			var ueIn:UnitEvent = new UnitEvent(UnitEvent.UNIT_CLOSE_TO);
-			ueIn.initCloseTo(unit, DISTANCE, addGoodInList, this); 
-			World._WORLD.addWorldEvent(ueIn);
-			
-			var ueOut:UnitEvent = new UnitEvent(UnitEvent.UNIT_LEAVE_OFF);
-			ueOut.initLeaveOff(unit, DISTANCE, removeGoodInList, this); 
-			World._WORLD.addWorldEvent(ueOut);
+			var ue:UnitEvent = new UnitEvent(UnitEvent.UNIT_CLOSE_AND_LEAVE);
+			ue.initCloseAndLeave(unit, DISTANCE, addGoodInList, removeGoodInList, this); 
+			World._WORLD.addWorldEvent(ue);
 		}
 		
 		public function addGoodInList(unit:Unit, target:Unit, skill:Skill = null):void {

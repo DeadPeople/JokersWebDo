@@ -1,6 +1,8 @@
 package model.skill
 {
 	import model.Unit;
+	
+	import mx.collections.ArrayList;
 
 	public class Skill
 	{

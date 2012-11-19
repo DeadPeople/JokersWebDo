@@ -30,10 +30,10 @@ package game
 		
 		// 系统数据
 		public var _lastUnit:Unit;
+		public var _map:Map;
 		
 		// 系统事件单位组
-		public var _unitCloseEventAry:ArrayList;
-		public var _unitLeaveEventAry:ArrayList;
+		public var _unitCloseLeaveEventAry:ArrayList;
 		
 		public function World(mode:GameMode)
 		{
@@ -48,8 +48,7 @@ package game
 			_players = new ArrayList();
 			_units = new ArrayList();
 			_regions = new ArrayList();
-			_unitCloseEventAry = new ArrayList();
-			_unitLeaveEventAry = new ArrayList();
+			_unitCloseLeaveEventAry = new ArrayList();
 			
 			_mode = mode;
 			_mode.init(this);
@@ -92,11 +91,10 @@ package game
 				// TODO: 添加单位事件处理
 				var ue:UnitEvent = UnitEvent(event);
 				switch(ue.type){
-					case UnitEvent.UNIT_CLOSE_TO:
-						_unitCloseEventAry.addItem(event);
-						break;
-					case UnitEvent.UNIT_LEAVE_OFF:
-						_unitLeaveEventAry.addItem(event);
+					case UnitEvent.UNIT_CLOSE:
+					case UnitEvent.UNIT_LEAVE:
+					case UnitEvent.UNIT_CLOSE_AND_LEAVE:
+						_unitCloseLeaveEventAry.addItem(event);
 						break;
 				}
 			}
@@ -105,17 +103,41 @@ package game
 		//---------------------------------------
 		// 刷新世界
 		public function refresh():void {
+			var i:int, j:int;			// 遍历对象
 			var ue:UnitEvent;
 			var unit:Unit;
 			var target:Unit;
 			// 单位移动
+			// TODO: 移动单位
 			
 			// 单位事件 - 靠近
-			for each(ue in _unitCloseEventAry) {
+			for(i = 0; i < _unitCloseLeaveEventAry.length ; i++) {
+				ue = UnitEvent(_unitCloseLeaveEventAry.getItemAt(i));
 				unit = ue._unit;
-				for each(target in _units) {
-					if(Point.distance(unit._position, target._position) <= ue._distance) {
-						ue._func(unit, target, ue._skill);
+				for(j = 0 ; j < _units.length ; j++) {
+					target = Unit(_units.getItemAt(j));
+					if(unit == target) continue;
+					
+					if(ue._units.getItemIndex(target) == -1) {	// 获取事件中的范围列表有没有这个单位
+						if(Point.distance(unit._position, target._position) <= ue._distance) {
+							ue._units.addItem(target);
+							if(ue._func1 != null) ue._func1(unit, target, ue._skill);
+						}
+					}
+				}
+			}
+			
+			// 单位事件 - 离开
+			for(i = 0; i < _unitCloseLeaveEventAry.length ; i++) {
+				ue = UnitEvent(_unitCloseLeaveEventAry.getItemAt(i));
+				unit = ue._unit;
+				for(j = 0 ; j < ue._units.length ; j++) {		// 获取事件中的范围列表的单位
+					target = Unit(ue._units.getItemAt(j));
+					if(Point.distance(unit._position, target._position) > ue._distance) {
+						ue._units.removeItem(target);
+						if(ue._func2 != null) ue._func2(unit, target, ue._skill);
+						
+						j--;
 					}
 				}
 			}

@@ -15,6 +15,7 @@ package test
 	import model.Unit;
 	import model.unitType.AHero;
 	
+	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.asserts.assertTrue;
 	
 	public class WorldTest
@@ -58,6 +59,21 @@ package test
 			var hero1:Unit = world._lastUnit;
 			mode.selectHero(0, player2);
 			var hero2:Unit = world._lastUnit;
+			
+			// run system : 运行一次系统，让英雄进入商店列表
+			world.refresh();
+			
+			assertEquals(world._unitCloseLeaveEventAry.length, 1);
+			assertEquals(UnitEvent(world._unitCloseLeaveEventAry.getItemAt(0))._units.length, 2);
+			
+			// hero move
+			hero1._position.x = 999;
+			hero1._position.y = 999;
+			
+			// run system : 运行一次系统，让英雄离开商店列表
+			world.refresh();
+			assertEquals(world._unitCloseLeaveEventAry.length, 1);
+			assertEquals(UnitEvent(world._unitCloseLeaveEventAry.getItemAt(0))._units.length, 1);
 			
 			// player buy something
 			
